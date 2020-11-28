@@ -24,7 +24,7 @@ func NewUserProfileRepository(db *pgxpool.Pool) UserProfileRepository {
 
 func (repo *repo) FindUserProfileByID(ctx context.Context, id int64) (*entities.UserProfile, error) {
 	query := `
-		SELECT id, profile_name, phone_number, email, gender, created_at, updated_at, deleted_at
+		SELECT id, profile_name, phone_number, email, gender, created_at
 		FROM user_profiles WHERE id = $1 AND deleted_at IS NULL
 	`
 	var (
@@ -34,11 +34,9 @@ func (repo *repo) FindUserProfileByID(ctx context.Context, id int64) (*entities.
 		_Email       pgtype.Varchar
 		_Gender      pgtype.Varchar
 		_CreatedAt   pgtype.Timestamp
-		_UpdatedAt   pgtype.Timestamp
-		_DeletedAt   pgtype.Timestamp
 	)
 	err := repo.DB.QueryRow(ctx, query, id).
-		Scan(&_ID, &_ProfileName, &_PhoneNumber, &_Email, &_Gender, &_CreatedAt, &_UpdatedAt, &_DeletedAt)
+		Scan(&_ID, &_ProfileName, &_PhoneNumber, &_Email, &_Gender, &_CreatedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -50,8 +48,6 @@ func (repo *repo) FindUserProfileByID(ctx context.Context, id int64) (*entities.
 		Email:       _Email.String,
 		Gender:      _Gender.String,
 		CreatedAt:   &_CreatedAt.Time,
-		UpdatedAt:   &_UpdatedAt.Time,
-		DeletedAt:   &_DeletedAt.Time,
 	}
 
 	return userProfile, nil

@@ -84,13 +84,14 @@ func (repo *repo) FindByUsername(ctx context.Context, username string) (*entitie
 		_ID            pgtype.Int8
 		_Username      pgtype.Varchar
 		_Password      pgtype.Varchar
+		_IsEnabled     pgtype.Bool
 		_UserProfileID pgtype.Int8
 		_CreatedAt     pgtype.Timestamp
 		_UpdatedAt     pgtype.Timestamp
 		_DeletedAt     pgtype.Timestamp
 	)
 	err := repo.DB.QueryRow(ctx, query, username).
-		Scan(&_ID, &_Username, &_Password, &_UserProfileID, &_CreatedAt, &_UpdatedAt, &_DeletedAt)
+		Scan(&_ID, &_Username, &_Password, &_IsEnabled, &_UserProfileID, &_CreatedAt, &_UpdatedAt, &_DeletedAt)
 
 	if err != nil {
 		return nil, err

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fiberauthenticationjwt/entities"
 	"fiberauthenticationjwt/repositories"
+	"log"
 	"time"
 
 	jwt "github.com/form3tech-oss/jwt-go"
@@ -58,6 +59,7 @@ func (service *service) CreateUserCredential(ctx context.Context, credential *en
 }
 
 func (service *service) AuthenticateUser(ctx context.Context, credential *entities.Credential) (*entities.AuthObject, error) {
+	log.Println("Username = ", credential.Username)
 	_credential, err := service.repo.CredentialRepository.FindByUsername(ctx, credential.Username)
 	if err != nil {
 		return nil, errors.New("Invalid username")

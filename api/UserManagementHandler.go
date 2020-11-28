@@ -12,7 +12,7 @@ func UserManagementHandler(handler *handler) {
 	handler.app.Post("/user/register-user", handler.handleRegisterUser)
 	handler.app.Post("/user/create-credential", handler.handleCreateCredential)
 	handler.app.Post("/user/authenticate", handler.handleAuthenticateUser)
-	handler.app.Get("/user/info", handler.handleGetUserInfo)
+	handler.secured.Get("/user/info", handler.handleGetUserInfo)
 }
 
 func (handler *handler) handleRegisterUser(c *fiber.Ctx) error {
